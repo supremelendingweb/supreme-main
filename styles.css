@@ -126,9 +126,9 @@ a:hover { border-bottom-color: var(--accent); }
   background: var(--white);
   border: 0;
   border-radius: 0;
-  padding: 5px 10px;
-  height: 28px;
-  width: 220px;
+  padding: 8px 12px;
+  height: 32px;
+  width: 280px;
   outline: none;
   -webkit-appearance: none;
   appearance: none;
@@ -139,14 +139,17 @@ a:hover { border-bottom-color: var(--accent); }
   color: var(--white);
   border: 0;
   border-radius: 0;
-  padding: 0 10px;
-  height: 28px;
-  font-size: 14px;
+  padding: 0 12px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
+.topbar__search button svg { display: block; }
 .topbar__search button:hover { background: #2a8de0; }
 @media (max-width: 720px) {
-  .topbar__search input[type="search"] { width: 140px; }
+  .topbar__search input[type="search"] { width: 180px; }
 }
 .topbar a { color: var(--white); }
 .topbar a:hover { color: var(--accent); border-bottom-color: var(--accent); }
