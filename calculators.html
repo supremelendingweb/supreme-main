@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculators — Supreme Lending</title>
+<meta name="description" content="Affordability, payment, refinance, and VA entitlement calculators for educational use.">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="stylesheet" href="css/styles.css?v=12">
+</head>
+<body>
+<div class="topbar">
+  <div class="container">
+    <span class="topbar__phone">Customer Service: <a href="tel:8662190032">866.219.0032</a></span>
+    <a href="https://www.servicingsupreme.com/ILSWeb/Logon.aspx" target="_blank" rel="noopener">Customer Care Center</a>
+    <form class="topbar__search" action="https://www.supremelending.com/" method="get" target="_blank" role="search">
+      <input type="search" name="s" placeholder="Search supremelending.com" aria-label="Search supremelending.com">
+      <button type="submit" aria-label="Search">&#x1F50D;</button>
+    </form>
+  </div>
+</div>
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="Supreme Lending home">
+      <img src="assets/logo.svg" alt="Supreme Lending">
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-controls="primary-nav">&#9776;</button>
+    <nav id="primary-nav" class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="about.html">About Us</a></li>
+        <li class="nav__item"><a class="nav__link" href="https://careers.supremelending.com/" target="_blank" rel="noopener">Careers</a></li>
+        <li class="nav__item"><a class="nav__link" href="loan-options.html">Loan Options</a></li>
+        <li class="nav__item"><a class="nav__link" href="calculators.html">Calculators</a></li>
+        <li class="nav__item">
+          <a class="nav__link has-caret" href="#" aria-haspopup="true">Homebuyer Resources</a>
+          <ul class="nav__submenu">
+            <li><a href="dictionary.html">Mortgage Dictionary</a></li>
+            <li><a href="process.html">Process</a></li>
+            <li><a href="faqs.html">FAQs</a></li>
+          </ul>
+        </li>
+        <li class="nav__item"><a class="nav__link" href="contact.html">Contact Us</a></li>
+        <li class="nav__item"><a class="btn nav__cta" href="directory.html">Find a Loan Officer</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<section class="section section--dark">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--accent);">CALCULATORS</div>
+    <h1>Run the numbers your way.</h1>
+    <p style="max-width:700px;">These tools are for general educational purposes only. They are not a credit decision, pre-approval, or rate quote. Confirm any scenario with a licensed loan officer.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="calc-tabs" role="tablist">
+      <button class="calc-tab is-active" data-target="tab-aff" role="tab">Affordability</button>
+      <button class="calc-tab" data-target="tab-pay" role="tab">Payment</button>
+      <button class="calc-tab" data-target="tab-refi" role="tab">Refinance</button>
+      <button class="calc-tab" data-target="tab-va" role="tab">VA Entitlement</button>
+    </div>
+
+    <!-- AFFORDABILITY -->
+    <div id="tab-aff" class="calc-panel is-active">
+      <div class="calc">
+        <h3>Affordability</h3>
+        <p class="muted">Estimate the home price you may be able to afford based on income, debts, down payment, and your assumed rate.</p>
+        <div class="form">
+          <div class="row-2">
+            <div><label for="aff-income">Gross monthly income ($)</label><input id="aff-income" type="number" min="0" value="8000"></div>
+            <div><label for="aff-debts">Other monthly debts ($)</label><input id="aff-debts" type="number" min="0" value="500"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="aff-down">Down payment ($)</label><input id="aff-down" type="number" min="0" value="40000"></div>
+            <div><label for="aff-rate">Assumed interest rate (%)</label><input id="aff-rate" type="number" step="0.01" min="0" value="6.5"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="aff-term">Term (years)</label><input id="aff-term" type="number" min="5" max="40" value="30"></div>
+            <div><label for="aff-taxins">Taxes + Insurance + HOA (%/yr of value)</label><input id="aff-taxins" type="number" step="0.01" min="0" value="1.5"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="aff-dti">Target DTI (%)</label><input id="aff-dti" type="number" min="20" max="50" value="36"></div>
+            <div style="display:flex;align-items:flex-end;"><button type="button" class="btn" onclick="calcAffordability()">Calculate</button></div>
+          </div>
+        </div>
+        <div id="aff-result" class="result">Enter your details and click Calculate.</div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div id="tab-pay" class="calc-panel">
+      <div class="calc">
+        <h3>Monthly Payment</h3>
+        <p class="muted">Estimate a monthly mortgage payment including principal, interest, taxes, insurance, and HOA.</p>
+        <div class="form">
+          <div class="row-2">
+            <div><label for="pay-price">Home price ($)</label><input id="pay-price" type="number" min="0" value="350000"></div>
+            <div><label for="pay-down">Down payment ($)</label><input id="pay-down" type="number" min="0" value="35000"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="pay-rate">Assumed interest rate (%)</label><input id="pay-rate" type="number" step="0.01" min="0" value="6.5"></div>
+            <div><label for="pay-term">Term (years)</label><input id="pay-term" type="number" min="5" max="40" value="30"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="pay-tax">Annual property tax ($)</label><input id="pay-tax" type="number" min="0" value="3600"></div>
+            <div><label for="pay-ins">Annual homeowners insurance ($)</label><input id="pay-ins" type="number" min="0" value="1500"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="pay-hoa">Monthly HOA ($)</label><input id="pay-hoa" type="number" min="0" value="0"></div>
+            <div style="display:flex;align-items:flex-end;"><button type="button" class="btn" onclick="calcPayment()">Calculate</button></div>
+          </div>
+        </div>
+        <div id="pay-result" class="result">Enter your details and click Calculate.</div>
+      </div>
+    </div>
+
+    <!-- REFI -->
+    <div id="tab-refi" class="calc-panel">
+      <div class="calc">
+        <h3>Refinance</h3>
+        <p class="muted">Compare your current loan to a refinance scenario and estimate the break-even point.</p>
+        <div class="form">
+          <div class="row-2">
+            <div><label for="refi-balance">Current loan balance ($)</label><input id="refi-balance" type="number" min="0" value="280000"></div>
+            <div><label for="refi-cur-rate">Current rate (%)</label><input id="refi-cur-rate" type="number" step="0.01" min="0" value="7.25"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="refi-cur-years">Years remaining on current loan</label><input id="refi-cur-years" type="number" min="1" max="40" value="27"></div>
+            <div><label for="refi-new-rate">New rate (%)</label><input id="refi-new-rate" type="number" step="0.01" min="0" value="6.0"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="refi-new-years">New term (years)</label><input id="refi-new-years" type="number" min="5" max="40" value="30"></div>
+            <div><label for="refi-costs">Estimated closing costs ($)</label><input id="refi-costs" type="number" min="0" value="4500"></div>
+          </div>
+          <div><button type="button" class="btn" onclick="calcRefi()">Calculate</button></div>
+        </div>
+        <div id="refi-result" class="result">Enter your details and click Calculate.</div>
+      </div>
+    </div>
+
+    <!-- VA -->
+    <div id="tab-va" class="calc-panel">
+      <div class="calc">
+        <h3>VA Entitlement</h3>
+        <p class="muted">Estimate VA entitlement availability. For full-entitlement borrowers, the VA does not impose a loan limit; for partial entitlement, available guaranty is generally 25% of the county loan limit minus entitlement already used.</p>
+        <div class="form">
+          <div class="row-2">
+            <div><label for="va-first">Is this your first VA loan?</label>
+              <select id="va-first"><option value="yes">Yes</option><option value="no">No</option></select></div>
+            <div><label for="va-open">Do you have an active VA loan now?</label>
+              <select id="va-open"><option value="no">No</option><option value="yes">Yes</option></select></div>
+          </div>
+          <div class="row-2">
+            <div><label for="va-county">County conforming loan limit ($)</label><input id="va-county" type="number" min="0" value="766550"></div>
+            <div><label for="va-prior">Prior entitlement charged ($)</label><input id="va-prior" type="number" min="0" value="0"></div>
+          </div>
+          <div class="row-2">
+            <div><label for="va-price">Target purchase price ($)</label><input id="va-price" type="number" min="0" value="0"></div>
+            <div style="display:flex;align-items:flex-end;"><button type="button" class="btn" onclick="calcVA()">Calculate</button></div>
+          </div>
+        </div>
+        <div id="va-result" class="result">Enter your details and click Calculate.</div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:24px;font-size:13px;">Calculators are illustrative only. Actual loan terms, eligibility, and payments depend on borrower qualification, property, and program guidelines. This is not a commitment to lend, a pre-approval, or a rate quote.</p>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Supreme Lending</h4>
+        <p style="color:#c8d2e2;">EVERETT FINANCIAL, INC. D/B/A SUPREME LENDING. Equal Housing Opportunity Lender. NMLS ID #2129.</p>
+        <p style="color:#c8d2e2;font-size:13px;">Loan products subject to credit and property approval. Programs, rates, terms, and conditions subject to change without notice. Not all products available in all states.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="https://careers.supremelending.com/" target="_blank" rel="noopener">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="loan-options.html">Loan Options</a></li>
+          <li><a href="calculators.html">Calculators</a></li>
+          <li><a href="dictionary.html">Mortgage Dictionary</a></li>
+          <li><a href="process.html">Process</a></li>
+          <li><a href="faqs.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:info@supremelending.com">info@supremelending.com</a></li>
+          <li><a href="directory.html">Find a Loan Officer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-disclaimer">
+      Information on this site is for general educational purposes only and is not a commitment to lend or an offer to enter into an interest rate or discount point agreement. All loans are subject to credit, underwriting, and property approval. Equal Housing Opportunity. Privacy Policy and State Licensing available upon request.
+    </div>
+  </div>
+</footer>
+<button id="chatFab" class="chat-fab" aria-label="Open chat">
+  <span aria-hidden="true">&#128172;</span>
+  <span id="chatBadge" class="chat-fab__badge" aria-hidden="true">1</span>
+  <span id="chatTip" class="chat-fab__tip" aria-hidden="true">Hi! Need help? Chat with us.</span>
+</button>
+<aside id="chatWin" class="chat-window" role="dialog" aria-label="Supreme Lending chat">
+  <div class="chat-header">
+    <div class="chat-header__id">
+      <div class="chat-header__avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 10v12h6v-7h8v7h6V10L12 2z" fill="#ff4040"/>
+          <path d="M9 12h6v1.5H9.7v1H15V16H9v-4z" fill="#001a40"/>
+        </svg>
+      </div>
+      <div>
+        <div class="chat-header__title">Supreme Assistant</div>
+        <div class="chat-header__status">Online · Typically replies instantly</div>
+      </div>
+    </div>
+    <button id="chatClose" aria-label="Close chat">&times;</button>
+  </div>
+  <div id="chatBody" class="chat-body"></div>
+  <div id="chatQuick" class="chat-quick">
+    <button data-q="What documents do I need?">Documents</button>
+    <button data-q="How long does the process take?">Process</button>
+    <button data-q="Tell me about loan options">Loan Options</button>
+    <button data-q="How do I contact you?">Contact</button>
+  </div>
+  <div class="chat-input">
+    <input id="chatInput" type="text" placeholder="Type your question…" aria-label="Type your question">
+    <button id="chatSend">Send</button>
+  </div>
+  <div class="chat-disclaimer">For general information only. Not a credit decision or rate quote.</div>
+</aside>
+<script src="js/main.js?v=12"></script>
+</body>
+</html>
