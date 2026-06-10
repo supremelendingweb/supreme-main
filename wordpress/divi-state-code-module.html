@@ -1,0 +1,336 @@
+<!--
+  =====================================================================
+  SUPREME LENDING — Divi Code Module (per state page)
+  Drop this entire block into a Divi Code Module on each state page.
+  Replaces both the existing <style> and <script> sections.
+
+  STEP 1 — Update your CSV (id.csv)
+    Add a 7th column header: "Other Licensed States"
+    Each row's value is a list of 2-letter state codes separated by
+    semicolons, pipes, slashes, or colons. Examples:
+      FL; CO; GA
+      TX | CA | NV
+    DO NOT use commas inside the cell unless you wrap the whole cell in
+    double quotes — commas would otherwise be parsed as new columns.
+    Example final CSV row:
+      Tyler Duncan,Loan Officer,1234567,"123 Main St, Charlotte, NC 28202",tylerduncan.example.com,tyler@supremelending.com,FL; CO; GA
+
+  STEP 2 — Per state page
+    Change PAGE_STATE below to the 2-letter code for THIS page:
+      Texas      page → PAGE_STATE = "TX"
+      Florida    page → PAGE_STATE = "FL"
+      N. Carolina page → PAGE_STATE = "NC"
+      etc.
+
+  HOW IT BEHAVES
+    For every LO row, the script extracts the home state from the
+    address text (last two-letter uppercase code in the address).
+    - Home state == PAGE_STATE  →  card shows the full home address.
+    - PAGE_STATE in Other Licensed States only  →  card shows
+                                                     "Licensed in [STATE]".
+    - Neither match  →  LO is hidden on this page entirely.
+  =====================================================================
+-->
+
+<div id="lo-directory">
+  <input type="text" id="searchInput" placeholder="Search by name..." />
+  <div id="lo-list"></div>
+</div>
+
+<style>
+/* ---------- Wrapper ---------- */
+#lo-directory {
+  font-family: 'Inter', Arial, sans-serif;
+  color: #001a40;
+  font-size: 15px;
+  line-height: 1.55;
+}
+#lo-directory * { box-sizing: border-box; }
+
+/* ---------- Search input ---------- */
+#lo-directory #searchInput {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 14px;
+  margin: 0 0 24px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 15px;
+  color: #001a40;
+  background: #ffffff;
+  border: 1px solid #e2e6ee;
+  border-radius: 0;
+}
+#lo-directory #searchInput:focus { outline: 2px solid #50b0ff; outline-offset: 0; }
+
+/* ---------- Grid ---------- */
+#lo-directory #lo-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 980px) { #lo-directory #lo-list { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 560px) { #lo-directory #lo-list { grid-template-columns: 1fr; } }
+
+/* ---------- Card ---------- */
+#lo-directory .lo-card {
+  background: #ffffff;
+  border: 0;
+  padding: 28px 24px 24px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #001a40;
+}
+
+/* ---------- Pin buttons to bottom ---------- */
+#lo-directory .lo-links { margin-top: auto; }
+
+/* ---------- Name ---------- */
+#lo-directory .lo-name {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #001a40;
+  line-height: 1.2;
+  text-transform: none;
+  margin: 0 0 2px;
+}
+
+/* ---------- Title ---------- */
+#lo-directory .lo-title {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #50b0ff;
+  margin: 0 0 10px;
+}
+
+/* ---------- NMLS ---------- */
+#lo-directory .lo-nmls {
+  font-size: 13px;
+  color: #5a6478;
+  margin: 0 0 10px;
+}
+
+/* ---------- Address (or "Licensed in" fallback) ---------- */
+#lo-directory .lo-address-line1,
+#lo-directory .lo-address-line2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #001a40;
+  margin: 0;
+}
+#lo-directory .lo-address-line2 { margin-bottom: 16px; }
+#lo-directory .lo-address-line1:last-of-type { margin-bottom: 16px; }
+
+/* ---------- Action buttons (stacked) ---------- */
+#lo-directory .lo-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e6ee;
+  font-size: 0;
+}
+
+#lo-directory .lo-links a:not([href^="mailto:"]) { order: 1; }
+#lo-directory .lo-links a[href^="mailto:"]       { order: 2; }
+
+#lo-directory .lo-links a,
+#lo-directory .lo-links a:link,
+#lo-directory .lo-links a:visited,
+#lo-directory .lo-links a:hover,
+#lo-directory .lo-links a:active,
+#lo-directory .lo-links a:focus {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 18px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+#lo-directory .lo-links a:hover { text-decoration: none; }
+
+/* View Profile — navy fill, light-blue fill on hover */
+#lo-directory .lo-links a:not([href^="mailto:"]),
+#lo-directory .lo-links a:not([href^="mailto:"]):link,
+#lo-directory .lo-links a:not([href^="mailto:"]):visited {
+  background: #001a40;
+  color: #ffffff;
+  transition: background .15s ease, color .15s ease;
+}
+#lo-directory .lo-links a:not([href^="mailto:"]):hover,
+#lo-directory .lo-links a:not([href^="mailto:"]):active,
+#lo-directory .lo-links a:not([href^="mailto:"]):focus {
+  background: #a6deff;
+  color: #001a40;
+}
+
+/* Email — white with blue border */
+#lo-directory .lo-links a[href^="mailto:"],
+#lo-directory .lo-links a[href^="mailto:"]:link,
+#lo-directory .lo-links a[href^="mailto:"]:visited,
+#lo-directory .lo-links a[href^="mailto:"]:hover {
+  background: #ffffff;
+  color: #001a40;
+  border: 2px solid #50b0ff;
+  padding: 10px 16px;
+}
+#lo-directory .lo-links a[href^="mailto:"]:hover {
+  background: #50b0ff;
+  color: #ffffff;
+  border-color: #50b0ff;
+}
+</style>
+
+<script>
+(async function () {
+  // ============================================================
+  //  CHANGE THIS LINE on each state page (TX, NC, FL, CO, etc.)
+  // ============================================================
+  const PAGE_STATE = "TX";
+
+  const csvUrl       = "/wp-content/uploads/id.csv?v=" + Date.now();
+  const container    = document.getElementById("lo-list");
+  const searchInput  = document.getElementById("searchInput");
+
+  function parseCSVLine(line) {
+    const result = [];
+    let current = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      const nextChar = line[i + 1];
+      if (char === '"') {
+        if (inQuotes && nextChar === '"') { current += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (char === "," && !inQuotes) {
+        result.push(current.trim());
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim());
+    return result;
+  }
+
+  function cleanValue(value) {
+    if (!value) return "";
+    return value.replace(/^"(.*)"$/, "$1").trim();
+  }
+
+  function normalizeUrl(url) {
+    const cleaned = cleanValue(url);
+    if (!cleaned) return "#";
+    if (/^https?:\/\//i.test(cleaned)) return cleaned;
+    return "https://" + cleaned;
+  }
+
+  function splitAddress(fullAddress) {
+    let line1 = fullAddress;
+    let line2 = "";
+    const firstComma = fullAddress.indexOf(",");
+    if (firstComma !== -1) {
+      line1 = fullAddress.substring(0, firstComma).trim();
+      line2 = fullAddress.substring(firstComma + 1).trim();
+    }
+    return { line1, line2 };
+  }
+
+  // Split "FL; CO; GA" / "FL, CO, GA" / "FL | CO" → ["FL","CO","GA"]
+  function splitStates(s) {
+    if (!s) return [];
+    return s.split(/[;,:\/|]+/)
+            .map(x => x.trim().toUpperCase())
+            .filter(Boolean);
+  }
+
+  // Extract the LO's home state by grabbing the LAST two-letter
+  // uppercase token in the address (US addresses end with STATE ZIP).
+  function extractHomeState(address) {
+    const matches = address.match(/\b[A-Z]{2}\b/g);
+    return matches ? matches[matches.length - 1] : "";
+  }
+
+  try {
+    const response = await fetch(csvUrl, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text     = await response.text();
+    const lines    = text.split(/\r?\n/).filter(line => line.trim() !== "");
+    const dataRows = lines.slice(1).map(parseCSVLine);
+    container.innerHTML = "";
+
+    dataRows.forEach((cols) => {
+      if (cols.length < 6) return;
+      const name        = cleanValue(cols[0]);
+      const title       = cleanValue(cols[1]);
+      const nmls        = cleanValue(cols[2]);
+      const fullAddress = cleanValue(cols[3]);
+      const website     = normalizeUrl(cols[4]);
+      const email       = cleanValue(cols[5]);
+      const otherStates = splitStates(cols[6] || "");
+
+      // Decide whether to show this LO on this state page
+      const homeState = extractHomeState(fullAddress);
+      const isHome    = homeState === PAGE_STATE;
+      const isOther   = otherStates.includes(PAGE_STATE);
+      if (!isHome && !isOther) return;
+
+      // Address block: full address if home, else "Licensed in [STATE]"
+      let addressMarkup;
+      if (isHome) {
+        const { line1, line2 } = splitAddress(fullAddress);
+        addressMarkup =
+          `<div class="lo-address-line1">${line1}</div>` +
+          `<div class="lo-address-line2">${line2}</div>`;
+      } else {
+        addressMarkup = `<div class="lo-address-line1">Licensed in ${PAGE_STATE}</div>`;
+      }
+
+      const card = document.createElement("div");
+      card.className = "lo-card";
+      card.setAttribute("data-search", name.toLowerCase());
+      card.innerHTML = `
+        <div class="lo-name">${name}</div>
+        <div class="lo-title">${title}</div>
+        <div class="lo-nmls">NMLS #${nmls}</div>
+        ${addressMarkup}
+        <div class="lo-links">
+          <a href="mailto:${email}">Email</a>
+          <a href="${website}" target="_blank" rel="noopener">View Profile</a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    if (container.children.length === 0) {
+      container.innerHTML = `<p style="grid-column:1/-1;padding:40px;text-align:center;color:#5a6478;border:1px dashed #e2e6ee;">No loan officers are currently licensed in ${PAGE_STATE}. Please email <a href="mailto:info@supremelending.com">info@supremelending.com</a> for assistance.</p>`;
+    }
+
+    searchInput.addEventListener("input", function () {
+      const term  = this.value.toLowerCase().trim();
+      const cards = container.querySelectorAll(".lo-card");
+      cards.forEach((card) => {
+        const haystack = card.getAttribute("data-search");
+        card.style.display = haystack.includes(term) ? "" : "none";
+      });
+    });
+  } catch (error) {
+    container.innerHTML = "<p>Directory could not be loaded.</p>";
+    console.error("Directory error:", error);
+  }
+})();
+</script>

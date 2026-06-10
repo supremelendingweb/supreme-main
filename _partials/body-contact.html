@@ -1,0 +1,51 @@
+<section class="section section--dark">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--accent);">CONTACT US</div>
+    <h1>We'd love to hear from you.</h1>
+    <p style="max-width:700px;">Send us a note and we'll route your message to the right team. For loan-specific questions, we recommend connecting directly with a loan officer in our directory.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--2">
+      <div>
+        <h2>Send a message</h2>
+        <div class="divider"></div>
+        <form id="contact-form" class="form" novalidate>
+          <div class="row-2">
+            <div><label for="cf-name">Full Name *</label><input id="cf-name" name="name" type="text" required></div>
+            <div><label for="cf-email">Email *</label><input id="cf-email" name="email" type="email" required></div>
+          </div>
+          <div class="row-2">
+            <div><label for="cf-phone">Phone</label><input id="cf-phone" name="phone" type="tel"></div>
+            <div><label for="cf-topic">Topic</label>
+              <select id="cf-topic" name="topic">
+                <option>General Inquiry</option>
+                <option>Find a Loan Officer</option>
+                <option>Loan Options Question</option>
+                <option>Refinance Inquiry</option>
+                <option>Careers</option>
+                <option>Media / Partnerships</option>
+              </select>
+            </div>
+          </div>
+          <div><label for="cf-message">Message *</label><textarea id="cf-message" name="message" required placeholder="Tell us how we can help…"></textarea></div>
+          <div><button type="submit" class="btn">Send Message</button></div>
+          <div id="contact-ok" style="display:none;background:var(--bg-soft);padding:14px;border-left:4px solid var(--accent);">
+            Thank you — your email client should have opened with the message addressed to <strong>info@supremelending.com</strong>. If it didn't, please email us directly.
+          </div>
+          <p class="muted" style="font-size:13px;">Please do not include sensitive information such as Social Security numbers, account numbers, or dates of birth in this form. * Required field.</p>
+        </form>
+      </div>
+      <div>
+        <h2>Other ways to reach us</h2>
+        <div class="divider"></div>
+        <p><strong>Email</strong><br><a href="mailto:info@supremelending.com">info@supremelending.com</a></p>
+        <p><strong>Find a Loan Officer</strong><br><a href="directory.html">Search our directory</a></p>
+        <p><strong>Careers</strong><br><a href="https://careers.supremelending.com/" target="_blank" rel="noopener">Open roles</a></p>
+        <figure class="figure" style="margin-top:24px;"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=70" alt="A welcoming home exterior"></figure>
+      </div>
+    </div>
+  </div>
+</section>

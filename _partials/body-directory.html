@@ -1,0 +1,20 @@
+<section class="section section--dark">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--accent);">LOAN OFFICER DIRECTORY</div>
+    <h1>Find a loan officer near you.</h1>
+    <p style="max-width:700px;">Search by name, city, or state to connect with a licensed Supreme Lending loan officer. Loan officers display the states in which they are licensed; a personalized quote requires a full review with a licensed loan officer.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="directory-controls">
+      <input id="lo-search" type="text" placeholder="Search by name, city, ZIP, or NMLS…" aria-label="Search loan officers">
+      <select id="lo-state" aria-label="Filter by state"><option value="">All States</option></select>
+    </div>
+    <div id="lo-rows" class="lo-grid" aria-label="Loan officer directory">
+      <div class="lo-empty">Loading directory…</div>
+    </div>
+    <p class="muted" style="margin-top:18px;font-size:13px;">Directory data is sourced from <code>data/loanofficers.csv</code>. NMLS information is also available at <a href="https://www.nmlsconsumeraccess.org" target="_blank" rel="noopener">nmlsconsumeraccess.org</a>.</p>
+  </div>
+</section>

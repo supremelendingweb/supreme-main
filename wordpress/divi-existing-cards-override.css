@@ -1,0 +1,183 @@
+/* =====================================================================
+   SUPREME LENDING — Override CSS for existing #lo-directory code block
+   =====================================================================
+   Drop this entire <style> block into your existing Divi Code Module,
+   REPLACING the current <style>...</style> section.
+   No changes to your HTML or JS are required.
+
+   Visual order this produces (per card):
+      NAME
+      TITLE
+      Address line 1,
+      Address line 2
+      NMLS #...
+      ──────────
+      [ View Profile ]   (navy fill, white text)
+      [ Email ]          (white fill, blue border, navy text)
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+/* ---------- Wrapper ---------- */
+#lo-directory {
+  font-family: 'Inter', Arial, sans-serif;
+  color: #001a40;
+  font-size: 15px;
+  line-height: 1.55;
+}
+#lo-directory * { box-sizing: border-box; }
+
+/* ---------- Search input ---------- */
+#lo-directory #searchInput {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 14px;
+  margin: 0 0 24px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 15px;
+  color: #001a40;
+  background: #ffffff;
+  border: 1px solid #e2e6ee;
+  border-radius: 0;
+}
+#lo-directory #searchInput:focus {
+  outline: 2px solid #50b0ff;
+  outline-offset: 0;
+}
+
+/* ---------- Grid ---------- */
+#lo-directory #lo-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 980px) { #lo-directory #lo-list { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 560px) { #lo-directory #lo-list { grid-template-columns: 1fr; } }
+
+/* ---------- Card ---------- */
+#lo-directory .lo-card {
+  background: #ffffff;
+  border: 0;
+  padding: 28px 24px 24px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #001a40;
+}
+
+/* ---------- Visual order ----------
+   HTML order matches the desired display: name, title, NMLS, addr1, addr2, links.
+   margin-top: auto on .lo-links pins the buttons to the bottom of the card.
+*/
+#lo-directory .lo-links { margin-top: auto; }
+
+/* ---------- Name ---------- */
+#lo-directory .lo-name {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #001a40;
+  line-height: 1.2;
+  text-transform: none;       /* override the existing uppercase */
+  margin: 0 0 2px;
+}
+
+/* ---------- Title ---------- */
+#lo-directory .lo-title {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #50b0ff;
+  margin: 0 0 10px;
+}
+
+/* ---------- NMLS (sits directly under the title) ---------- */
+#lo-directory .lo-nmls {
+  font-size: 13px;
+  color: #5a6478;
+  margin: 0 0 10px;
+}
+
+/* ---------- Address (two lines treated as a single location block) ---------- */
+#lo-directory .lo-address-line1,
+#lo-directory .lo-address-line2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #001a40;
+  margin: 0;
+}
+#lo-directory .lo-address-line2 { margin-bottom: 16px; }
+
+/* ---------- Action buttons (stacked) ---------- */
+#lo-directory .lo-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e6ee;
+  font-size: 0;               /* kill the inline-block whitespace from old CSS */
+}
+
+/* Reorder: Profile (non-mailto) above, Email below */
+#lo-directory .lo-links a:not([href^="mailto:"]) { order: 1; }
+#lo-directory .lo-links a[href^="mailto:"]       { order: 2; }
+
+/* Shared button base */
+#lo-directory .lo-links a,
+#lo-directory .lo-links a:link,
+#lo-directory .lo-links a:visited,
+#lo-directory .lo-links a:hover,
+#lo-directory .lo-links a:active,
+#lo-directory .lo-links a:focus {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 18px;
+  margin: 0;                   /* remove the old margin-right */
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+#lo-directory .lo-links a:hover { text-decoration: none; }
+
+/* View Profile (anything that's NOT mailto) — navy fill / white text;
+   light-blue fill / navy text on hover */
+#lo-directory .lo-links a:not([href^="mailto:"]),
+#lo-directory .lo-links a:not([href^="mailto:"]):link,
+#lo-directory .lo-links a:not([href^="mailto:"]):visited {
+  background: #001a40;
+  color: #ffffff;
+  transition: background .15s ease, color .15s ease;
+}
+#lo-directory .lo-links a:not([href^="mailto:"]):hover,
+#lo-directory .lo-links a:not([href^="mailto:"]):active,
+#lo-directory .lo-links a:not([href^="mailto:"]):focus {
+  background: #a6deff;
+  color: #001a40;
+}
+
+/* Email — white with light blue border */
+#lo-directory .lo-links a[href^="mailto:"],
+#lo-directory .lo-links a[href^="mailto:"]:link,
+#lo-directory .lo-links a[href^="mailto:"]:visited,
+#lo-directory .lo-links a[href^="mailto:"]:hover {
+  background: #ffffff;
+  color: #001a40;
+  border: 2px solid #50b0ff;
+  padding: 10px 16px;
+}
+#lo-directory .lo-links a[href^="mailto:"]:hover {
+  background: #50b0ff;
+  color: #ffffff;
+  border-color: #50b0ff;
+}

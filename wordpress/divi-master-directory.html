@@ -1,0 +1,290 @@
+<!--
+  =====================================================================
+  SUPREME LENDING — Master Loan Officer Directory (Divi Code Module)
+  =====================================================================
+  Mirrors the static site's directory page:
+    • Starts empty with a "Find your loan officer" prompt
+    • Search by name, city, ZIP, or NMLS
+    • State dropdown filter (auto-built from the CSV)
+    • Cards only appear after a search/filter is applied
+    • 3-column card grid (collapses to 2 / 1 on smaller screens)
+
+  INSTALL
+  -------
+  1. Make sure your master CSV is uploaded somewhere public, e.g.
+       /wp-content/uploads/loanofficers.csv
+     with this exact column order:
+       Full Name, Title, NMLS, City, State, Zip Code,
+       Other Licensed States, Profile URL, Email
+
+  2. Drop a Divi Code Module on a page (e.g. "/find-a-loan-officer/").
+
+  3. Paste this entire block into the module.
+
+  4. If your CSV is at a different path, change the CSV_URL constant in
+     the <script> block below.
+
+  WHY THIS APPROACH
+  -----------------
+  Live filter UX requires JS regardless of how cards are rendered, and
+  this page only displays results after the user filters — so server-
+  rendering wouldn't help SEO. A self-contained Code Module keeps the
+  whole feature in one place and matches the static site exactly.
+  =====================================================================
+-->
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+
+<div class="sl-dir">
+  <div class="sl-dir__controls">
+    <input id="sl-dir-search" type="text" placeholder="Search by name, city, ZIP, or NMLS…" aria-label="Search loan officers">
+    <select id="sl-dir-state" aria-label="Filter by state"><option value="">All States</option></select>
+  </div>
+  <div id="sl-dir-grid" class="sl-dir__grid"></div>
+</div>
+
+<style>
+.sl-dir { font-family: 'Inter', Arial, sans-serif; color: #001a40; font-size: 15px; line-height: 1.55; }
+.sl-dir *, .sl-dir *::before, .sl-dir *::after { box-sizing: border-box; }
+
+.sl-dir__controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.sl-dir__controls input,
+.sl-dir__controls select {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 15px;
+  color: #001a40;
+  padding: 12px 14px;
+  border: 1px solid #e2e6ee;
+  border-radius: 0;
+  background: #ffffff;
+  max-width: 320px;
+  flex: 1 1 220px;
+}
+.sl-dir__controls input:focus,
+.sl-dir__controls select:focus { outline: 2px solid #50b0ff; outline-offset: 0; }
+
+.sl-dir__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 980px) { .sl-dir__grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 560px) { .sl-dir__grid { grid-template-columns: 1fr; } }
+
+.sl-dir__card {
+  background: #ffffff;
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.sl-dir__name {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #001a40;
+  line-height: 1.2;
+  margin: 0 0 2px;
+}
+.sl-dir__name a, .sl-dir__name a:link, .sl-dir__name a:visited { color: #001a40; text-decoration: none; }
+.sl-dir__name a:hover { color: #50b0ff; }
+.sl-dir__title {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #50b0ff;
+  margin-bottom: 10px;
+}
+.sl-dir__nmls { font-size: 13px; color: #5a6478; margin-bottom: 10px; }
+.sl-dir__location { font-size: 14px; font-weight: 500; color: #001a40; margin-bottom: 16px; }
+
+.sl-dir__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid #e2e6ee;
+}
+.sl-dir__actions a,
+.sl-dir__actions a:link,
+.sl-dir__actions a:visited,
+.sl-dir__actions a:hover {
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+.sl-dir__actions .profile,
+.sl-dir__actions .profile:link,
+.sl-dir__actions .profile:visited { background: #001a40; color: #ffffff; transition: background .15s ease, color .15s ease; }
+.sl-dir__actions .profile:hover { background: #a6deff; color: #001a40; }
+.sl-dir__actions .email,
+.sl-dir__actions .email:link,
+.sl-dir__actions .email:visited { background: #ffffff; color: #001a40; border: 2px solid #50b0ff; padding: 10px 16px; }
+.sl-dir__actions .email:hover { background: #50b0ff; color: #ffffff; border-color: #50b0ff; }
+
+.sl-dir__empty {
+  grid-column: 1 / -1;
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px dashed #e2e6ee;
+  color: #5a6478;
+}
+.sl-dir__empty strong {
+  display: block;
+  font-family: 'Work Sans', Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #001a40;
+  margin-bottom: 8px;
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Config ----
+  var CSV_URL = '/wp-content/uploads/loanofficers.csv';
+
+  // ---- Helpers ----
+  function parseCSV(text) {
+    var rows = [], i = 0, field = '', row = [], q = false;
+    while (i < text.length) {
+      var c = text[i];
+      if (q) {
+        if (c === '"' && text[i+1] === '"') { field += '"'; i += 2; continue; }
+        if (c === '"') { q = false; i++; continue; }
+        field += c; i++; continue;
+      }
+      if (c === '"') { q = true; i++; continue; }
+      if (c === ',') { row.push(field); field = ''; i++; continue; }
+      if (c === '\r') { i++; continue; }
+      if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+      field += c; i++;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    return rows.filter(function (r) { return r.length > 1 || (r[0] && r[0].trim()); });
+  }
+  function splitStates(s) {
+    if (!s) return [];
+    return s.split(/[;,:/|]+/).map(function (x) { return x.trim().toUpperCase(); }).filter(Boolean);
+  }
+  function ensureUrl(u) { return u && !/^https?:\/\//i.test(u) ? 'https://' + u : (u || ''); }
+  function escHTML(s) {
+    return String(s || '').replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+  function getEmail(o) { return (o['Email'] || o['Eemail'] || o['E-mail'] || '').trim(); }
+
+  // ---- Render ----
+  var grid       = document.getElementById('sl-dir-grid');
+  var searchEl   = document.getElementById('sl-dir-search');
+  var stateEl    = document.getElementById('sl-dir-state');
+  var data       = [];
+
+  function showPrompt() {
+    grid.innerHTML =
+      '<div class="sl-dir__empty">' +
+        '<strong>Find your loan officer</strong>' +
+        'Select a state above or search by name, city, ZIP, or NMLS to view loan officers licensed in your area.' +
+      '</div>';
+  }
+
+  function renderCards(officers) {
+    if (!officers.length) {
+      grid.innerHTML = '<div class="sl-dir__empty">No loan officers match your filter.</div>';
+      return;
+    }
+    grid.innerHTML = officers.map(function (o) {
+      var name    = escHTML((o['Full Name'] || '').trim());
+      var title   = escHTML((o['Title'] || '').trim());
+      var nmls    = escHTML((o['NMLS'] || '').trim());
+      var city    = escHTML((o['City'] || '').trim());
+      var state   = escHTML((o['State'] || '').trim());
+      var zip     = escHTML((o['Zip Code'] || '').trim());
+      var email   = escHTML(getEmail(o));
+      var profile = ensureUrl((o['Profile URL'] || '').trim());
+      var profSafe = escHTML(profile);
+
+      var loc = [city, [state, zip].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      var nameNode = profile
+        ? '<a href="' + profSafe + '" target="_blank" rel="noopener">' + name + '</a>'
+        : name;
+
+      var actions = [];
+      if (profile) actions.push('<a class="profile" href="' + profSafe + '" target="_blank" rel="noopener">Visit Website</a>');
+      if (email)   actions.push('<a class="email" href="mailto:' + email + '">Email</a>');
+
+      return '' +
+        '<article class="sl-dir__card">' +
+          '<h3 class="sl-dir__name">' + nameNode + '</h3>' +
+          (title ? '<div class="sl-dir__title">' + title + '</div>' : '') +
+          (nmls  ? '<div class="sl-dir__nmls">NMLS #' + nmls + '</div>' : '') +
+          (loc   ? '<div class="sl-dir__location">' + loc + '</div>' : '') +
+          (actions.length ? '<div class="sl-dir__actions">' + actions.join('') + '</div>' : '') +
+        '</article>';
+    }).join('');
+  }
+
+  function applyFilter() {
+    var q  = (searchEl.value || '').trim().toLowerCase();
+    var st = (stateEl.value  || '').trim().toUpperCase();
+    if (!q && !st) { showPrompt(); return; }
+    var filtered = data.filter(function (o) {
+      var hay = [o['Full Name'], o['City'], o['State'], o['Zip Code'], o['Other Licensed States'], o['NMLS']].join(' ').toLowerCase();
+      var matchQ  = !q  || hay.indexOf(q) !== -1;
+      var stateUp = (o['State'] || '').toUpperCase();
+      var others  = splitStates(o['Other Licensed States']);
+      var matchS  = !st || stateUp === st || others.indexOf(st) !== -1;
+      return matchQ && matchS;
+    });
+    renderCards(filtered);
+  }
+
+  // ---- Init ----
+  fetch(CSV_URL, { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error('CSV ' + r.status); return r.text(); })
+    .then(function (text) {
+      var rows = parseCSV(text);
+      if (!rows.length) { grid.innerHTML = '<div class="sl-dir__empty">Directory is empty.</div>'; return; }
+      var headers = rows.shift().map(function (h) { return h.trim(); });
+      data = rows.map(function (r) {
+        var o = {}; headers.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
+        return o;
+      }).filter(function (o) { return o['Full Name']; });
+
+      // Build state dropdown from every state we see (primary + other licensed)
+      var states = {};
+      data.forEach(function (o) {
+        if (o['State']) states[o['State'].toUpperCase().trim()] = true;
+        splitStates(o['Other Licensed States']).forEach(function (s) { states[s] = true; });
+      });
+      Object.keys(states).sort().forEach(function (s) {
+        var opt = document.createElement('option');
+        opt.value = s; opt.textContent = s;
+        stateEl.appendChild(opt);
+      });
+
+      showPrompt();
+      searchEl.addEventListener('input',  applyFilter);
+      stateEl.addEventListener('change', applyFilter);
+    })
+    .catch(function () {
+      grid.innerHTML = '<div class="sl-dir__empty">Unable to load the loan officer directory at this time. Please try again later or email <a href="mailto:info@supremelending.com">info@supremelending.com</a>.</div>';
+    });
+})();
+</script>
