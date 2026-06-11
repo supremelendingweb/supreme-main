@@ -7,16 +7,10 @@
 .slchat-fab {
 	position: fixed; right: 24px; bottom: 24px; z-index: 99998;
 	width: 64px; height: 64px;
+	border-radius: 50%;
 	background: linear-gradient(135deg, #ff4040 0%, #d63232 100%);
-	color: #ffffff;
-	border: 0; border-radius: 0;
-	font-family: 'Work Sans', Arial, sans-serif;
-	font-size: 28px; font-weight: 700;
-	cursor: pointer;
-	box-shadow: 0 8px 28px rgba(255,64,64,.35), 0 4px 12px rgba(0,26,64,.25);
-	transition: transform .2s ease, box-shadow .2s ease;
-	animation: slchatFabPulse 2.4s ease-in-out infinite;
 }
+
 .slchat-fab:hover {
 	transform: translateY(-2px) scale(1.05);
 	box-shadow: 0 12px 32px rgba(255,64,64,.45), 0 6px 16px rgba(0,26,64,.3);

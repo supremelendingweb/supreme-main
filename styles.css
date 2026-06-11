@@ -111,8 +111,9 @@ a:hover { border-bottom-color: var(--accent); }
   background: var(--primary);
   color: var(--white);
   font-size: 13px;
-  padding: 8px 0;
+  padding: 16px 0;
 }
+
 .topbar .container { width: 100%; max-width: none; padding: 0 32px; display: flex; justify-content: flex-end; align-items: center; gap: 24px; flex-wrap: wrap; }
 .topbar__phone { color: var(--white); font-weight: 500; }
 .topbar__phone a { color: var(--white); }
@@ -146,7 +147,13 @@ a:hover { border-bottom-color: var(--accent); }
   justify-content: center;
   cursor: pointer;
 }
-.topbar__search button svg { display: block; }
+.topbar__search button svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
 .topbar__search button:hover { background: #2a8de0; }
 @media (max-width: 720px) {
   .topbar__search input[type="search"] { width: 180px; }
@@ -531,9 +538,11 @@ a:hover { border-bottom-color: var(--accent); }
   width: 64px; height: 64px;
   background: linear-gradient(135deg, #ff4040 0%, #d63232 100%);
   color: var(--white);
-  border: 0; border-radius: 0;
+  border: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
   font-family: 'Work Sans', Arial, sans-serif;
-  font-size: 28px; font-weight: 700;
+  font-size: 0;
   cursor: pointer;
   box-shadow: 0 8px 28px rgba(255,64,64,.35), 0 4px 12px rgba(0,26,64,.25);
   transition: transform .2s ease, box-shadow .2s ease;
@@ -542,6 +551,20 @@ a:hover { border-bottom-color: var(--accent); }
 .chat-fab:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 12px 32px rgba(255,64,64,.45), 0 6px 16px rgba(0,26,64,.3); animation: none; }
 .chat-fab.is-active { animation: none; transform: rotate(90deg); }
 
+.chat-fab__icon {
+  width: 28px; height: 28px;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+}
+.chat-fab__icon svg {
+  width: 24px; height: 24px;
+  display: block;
+}
+.chat-fab__icon svg path {
+  stroke: #ffffff;  
+  fill: #ffffff; 
+}
+
 @keyframes fabPulse {
   0%, 100% { box-shadow: 0 8px 28px rgba(255,64,64,.35), 0 4px 12px rgba(0,26,64,.25), 0 0 0 0 rgba(255,64,64,.5); }
   50%      { box-shadow: 0 8px 28px rgba(255,64,64,.35), 0 4px 12px rgba(0,26,64,.25), 0 0 0 14px rgba(255,64,64,0); }
@@ -549,14 +572,15 @@ a:hover { border-bottom-color: var(--accent); }
 
 .chat-fab__badge {
   position: absolute; top: -6px; right: -6px;
-  min-width: 22px; height: 22px;
+  min-width: 24px; height: 24px;
   background: var(--accent);
   color: var(--white);
   font-family: 'Work Sans', sans-serif;
   font-size: 12px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   border: 2px solid var(--white);
-  padding: 0 6px;
+  border-radius: 50%;
+  padding: 0;
   box-shadow: 0 2px 6px rgba(0,26,64,.3);
 }
 .chat-fab__badge.is-hidden { display: none; }

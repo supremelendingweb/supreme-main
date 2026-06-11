@@ -78,8 +78,13 @@ class Supreme_Chatbot {
 		if ( ! self::should_render() ) return;
 		?>
 		<button id="slchatFab" class="slchat-fab" aria-label="Open chat">
-			<span aria-hidden="true">&#128172;</span>
+			<span class="slchat-fab__icon" aria-hidden="true">
+				<svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+				</svg>
+			</span>
 			<span id="slchatBadge" class="slchat-fab__badge" aria-hidden="true">1</span>
+
 			<span id="slchatTip" class="slchat-fab__tip" aria-hidden="true">Hi! Need help? Chat with us.</span>
 		</button>
 		<aside id="slchatWin" class="slchat-window" role="dialog" aria-label="Supreme Lending chat">
