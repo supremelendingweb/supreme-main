@@ -91,10 +91,7 @@ class Supreme_Chatbot {
 			<div class="slchat-header">
 				<div class="slchat-header__id">
 					<div class="slchat-header__avatar" aria-hidden="true">
-						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M12 2L2 10v12h6v-7h8v7h6V10L12 2z" fill="#ff4040"/>
-							<path d="M9 12h6v1.5H9.7v1H15V16H9v-4z" fill="#001a40"/>
-						</svg>
+					<img src="<?php echo esc_url( plugins_url( 'SL logo.png', __FILE__ ) ); ?>" alt="" style="width: 100%; height: 100%; object-fit: contain;">
 					</div>
 					<div>
 						<div class="slchat-header__title">Supreme Assistant</div>

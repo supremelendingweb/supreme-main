@@ -650,6 +650,7 @@ a:hover { border-bottom-color: var(--accent); }
   background: var(--white);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  border-radius: 50%;
 }
 .chat-header__avatar svg { width: 22px; height: 22px; display: block; }
 .chat-header__title {
@@ -671,6 +672,7 @@ a:hover { border-bottom-color: var(--accent); }
   width: 8px; height: 8px;
   background: #4ade80;
   display: inline-block;
+  border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(74,222,128,.6);
   animation: statusPulse 2s ease-out infinite;
 }
