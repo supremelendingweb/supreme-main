@@ -251,7 +251,7 @@ a:hover { border-bottom-color: var(--accent); }
 .hero {
   position: relative;
   overflow: hidden;
-  background: #001a40 url('assets/hero-poster.jpg') center/cover no-repeat;
+  background: #001a40 url('assets/Trees.png') center/cover no-repeat;
   color: var(--white);
   padding: 120px 0;
   isolation: isolate;
