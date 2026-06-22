@@ -276,21 +276,15 @@ a:hover { border-bottom-color: var(--accent); }
 .hero h1 { color: var(--white); max-width: 740px; }
 .hero p  { max-width: 620px; font-size: 18px; }
 .hero .btn { margin-right: 12px; }
+.hero .hero-actions { display: inline-flex; gap: 12px; flex-wrap: wrap; }
+.hero .hero-actions .btn { margin-right: 0; }
 
 /* On phones, video drains battery and data — fall back to the poster image. */
 @media (max-width: 720px) {
   .hero__video { display: none; }
-}
-/* Respect users who've asked the system to minimize motion. */
-@media (prefers-reduced-motion: reduce) {
-  .hero__video { display: none; }
-}
-
-/* ---------- Cards ---------- */
-.card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  padding: 28px;
+  .hero .hero-actions { flex-direction: column; gap: 14px; align-items: stretch; }
+  .hero .hero-actions .btn { display: block; width: 100%; max-width: 100%; margin-bottom: 14px; }
+  .hero .hero-actions .btn:last-child { margin-bottom: 0; }
 }
 .card h3 { margin-top: 0; }
 .card .icon {
