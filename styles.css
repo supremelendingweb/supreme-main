@@ -549,7 +549,7 @@ a:hover { border-bottom-color: var(--accent); }
   animation: fabPulse 2.4s ease-in-out infinite;
 }
 .chat-fab:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 12px 32px rgba(255,64,64,.45), 0 6px 16px rgba(0,26,64,.3); animation: none; }
-.chat-fab.is-active { animation: none; transform: rotate(90deg); }
+.chat-fab.is-active { animation: none; transform: none; }
 
 .chat-fab__icon {
   width: 28px; height: 28px;
